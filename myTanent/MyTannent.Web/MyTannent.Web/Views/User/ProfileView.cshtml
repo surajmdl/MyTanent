@@ -1,0 +1,201 @@
+﻿@model MyTannent.Web.ViewModel.UserViewModel
+
+@{
+    ViewBag.Title = "ProfileView";
+    string baseUrl = "http://localhost:9900";
+    string ProfilePhotoUrl = string.Empty;
+    if (!string.IsNullOrEmpty(Model.UserPhoto))
+    {
+        ProfilePhotoUrl = Model.UserPhoto.Replace("~", baseUrl);
+    }
+}
+<style>
+    .btn-prm-len {
+        width: 10%;
+        margin-left: 15px;
+    }
+
+    .noteText {
+        font-style: italic;
+        font-size: x-small;
+    }
+    .docFilesDiv {
+        max-height: 150px;
+        overflow-y: scroll;
+    }
+</style>
+<p>
+    @Html.ActionLink("Edit", "Profile", new { id = Model.Id }, new { @class = "btn btn-primary btn-prm-len" })
+</p>
+
+
+@*https://v4-alpha.getbootstrap.com/components/forms/?*@
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Basic Detail  <span style="float: right" class="glyphicon glyphicon-edit" aria-hidden="true"></span></div>
+        <div class="panel-body">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.UserId, new { @class = "col-sm-5 col-form-label" })
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.UserId, new { @class = "form-control-static mb-0" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Firstname, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.Firstname, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Lastname, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.Lastname)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Mobile1, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.Mobile1)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Mobile2, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.Mobile2)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.EmailId, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.EmailId)
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Gender, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.Gender)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Age, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.Age)
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.UserPhoto, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">                  
+                    <img height="60px" src="@ProfilePhotoUrl" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Address Detail</div>
+        <div class="panel-body">
+
+            @*            <div class="form-group row">
+                @Html.LabelFor(model => model.Country, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.Country)
+                </div>
+            </div>*@
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.State, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.State)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.City, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.City)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Locality, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.Locality)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.PermanentAddress, new { @class = "col-sm-5 control-label" })
+
+                <div class="col-sm-7">
+                    @Html.DisplayFor(model => model.PermanentAddress)
+                </div>
+            </div>
+
+            @*       <div class="form-group row">
+            @Html.LabelFor(model => model.AllotedRoomNo, new { @class = "col-sm-5 control-label" })
+
+            <div class="col-sm-7">
+                @Html.DisplayFor(model => model.AllotedRoomNo)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.AllotedFloorNo, new { @class = "col-sm-5 control-label" })
+
+            <div class="col-sm-7">
+                @Html.DisplayFor(model => model.AllotedFloorNo)
+            </div>
+        </div>*@
+
+
+        </div>
+    </div>
+
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Documents Detail</div>
+        <div class="panel-body">
+
+            <div class="">
+                <div id="docFilesDiv" class="docFilesDiv">
+                    @{
+                        if (Model.userDocModel.userDocumentList.Count() > 0)
+                        {
+                        <h4>Total Documents: (@Model.userDocModel.userDocumentList.Count()) Files</h4>
+                        }
+                        foreach (var item in Model.userDocModel.userDocumentList)
+                        {
+                            string file = item.Documents.Replace("~", baseUrl);
+                        <p><a href="@file" target="_blank">@file</a></p>                     
+                        }
+                    }
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

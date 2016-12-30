@@ -1,0 +1,261 @@
+﻿@model MyTannent.Web.ViewModel.UserViewModel
+
+@{
+    ViewBag.Title = "Profile";
+    string baseUrl = "http://localhost:9900";
+    string ProfilePhotoUrl = string.Empty;
+    if (!string.IsNullOrEmpty(Model.UserPhoto))
+    {
+        ProfilePhotoUrl = Model.UserPhoto.Replace("~", baseUrl);
+    }
+}
+
+@*http://plugins.krajee.com/file-basic-usage-demo*@
+<style>
+    .noteText {
+        font-style: italic;
+        font-size: x-small;
+    }
+    .docFilesDiv {
+        max-height: 150px;
+        overflow-y: scroll;
+    }
+</style>
+
+<h3 class="page-title">Edit Profile</h3>
+<div class="row">
+    @using (Html.BeginForm("Profile", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Basic Detail</div>
+                <div class="panel-body">
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.Firstname, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Firstname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Firstname)
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Lastname, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Lastname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Lastname)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Mobile1, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Mobile1, new { @class = "form-control numbersOnly" })
+                            @Html.ValidationMessageFor(model => model.Mobile1)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Mobile2, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Mobile2, new { @class = "form-control numbersOnly" })
+                            @Html.ValidationMessageFor(model => model.Mobile2)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmailId, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.EmailId, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmailId)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserId, new { @class = "col-sm-4 control-label numbersOnly" })
+
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.UserId, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserId)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.password, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.PasswordFor(model => model.password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.password)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 ">Profile Photo</label>
+                        <div class="col-sm-8">
+                          <input id="txtUserPhoto" name="profileImg" type="file" class="file form-control"><img height="45px" src="@ProfilePhotoUrl" />
+                            @Html.HiddenFor(model => model.UserPhoto) 
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Address Detail</div>
+                <div class="panel-body">
+
+                    @*                    <div class="form-group">
+                        @Html.LabelFor(model => model.Country, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Country, new { @class = "form-control", @id = "Country", @placeholder = "" })
+                            @Html.ValidationMessageFor(model => model.Country)
+                        </div>
+                    </div>*@
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.State, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.State, Model.lstStates, new { @id = "State", @class = "form-control", style = "" })
+                            @Html.ValidationMessageFor(model => model.State)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.City, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.City, Model.lstCity, new { @id = "City", @class = "form-control", style = "" })
+                            @Html.ValidationMessageFor(model => model.City)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Locality, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Locality, new { @class = "form-control", @id = "Locality", @placeholder = "Enter your address" })
+                            @Html.ValidationMessageFor(model => model.Locality)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PermanentAddress, new { @class = "col-sm-4 control-label" })
+
+                        <div class="col-sm-8">
+                            @Html.TextAreaFor(model => model.PermanentAddress, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PermanentAddress)
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Documents Detail</div>
+                <div class="panel-body">
+
+                    <div class="">
+                        <label class="control-label">Document [s]</label>
+                        <span class="noteText">(You can upload multiple file[s])</span>
+                        <input type="file" name="files" multiple class="file form-control">
+                    </div>
+                    <div id="docFilesDiv" class="docFilesDiv">
+                        @{
+        if (Model.userDocModel.userDocumentList.Count() > 0)
+        {
+                            <h4>Uploaded Documents: (@Model.userDocModel.userDocumentList.Count()) Files</h4>
+        }
+        foreach (var item in Model.userDocModel.userDocumentList)
+        {
+            string file= item.Documents.Replace("~", baseUrl);
+                            <p><a href="@file" target="_blank">@file</a></p>                     
+        }
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Action</div>
+                <div class="panel-body">
+                    <div class="">
+                        @Html.ActionLink("Cancel", "ProfileView", new { id = Model.Id }, new { @class = "btn btn-default" })
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $("#State").change(function () {
+            loadCity();
+        })
+
+        function loadCity() {
+            debugger;
+            $("#City").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetCityByStateID")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#State").val() },
+                success: function (Cities) {
+                    debugger;
+                    $.each(Cities, function (i, city) {
+                        $("#City").append('<option value="' + city.Value + '">' + city.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve City.' + ex);
+                }
+            });
+            return false;
+        }
+    });
+
+    $(document).ready(function () {
+        $('#UserId').prop('readonly', true);
+
+        // Numeric only control handler
+        jQuery.fn.ForceNumericOnly =
+        function () {
+            return this.each(function () {
+                $(this).keydown(function (e) {
+                    var key = e.charCode || e.keyCode || 0;
+                    // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
+                    // home, end, period, and numpad decimal
+                    return (
+                        key == 8 ||
+                        key == 9 ||
+                        key == 13 ||
+                        key == 46 ||
+                        key == 110 ||
+                        key == 190 ||
+                        (key >= 35 && key <= 40) ||
+                        (key >= 48 && key <= 57) ||
+                        (key >= 96 && key <= 105));
+                });
+            });
+        };
+
+        $("input.numbersOnly").ForceNumericOnly();
+    });
+</script>

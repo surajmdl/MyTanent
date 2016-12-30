@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "My Wallet";
+}
+
+<div id="content" class="max" style="height: 159px;">
+    <div flex="15" layout="column" layout-align="center center">
+        <div class="md-padding no-booking-message">
+            <div style="text-align: center; padding-top: 20px">
+                <p class="md-24 ng-binding"><span class="fa fa-credit-card" style="margin-right: 20px"></span>Current Wallet Balance : Rs. 0</p>
+            </div>
+            <div style="text-align: center" flex="90" ng-show="!transactionList.length>0">
+                <p class="md-24 ng-binding">No transaction done using myTanent Wallet!</p>
+            </div>
+        </div>
+    </div>
+    <div flex="15" class="transaction-list-wrapper">
+        <div layout="column" flex=""></div>
+        <div layout="column" class="parent" style="max-width: 650px; margin: 0 auto">
+            <!-- ngRepeat: transaction in transactionList track by $index -->
+        </div>
+        <div layout="column" flex=""></div>
+    </div>
+</div>

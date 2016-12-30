@@ -1,0 +1,129 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model MyTannent.Web.ViewModel.RoomViewModel
+
+@{
+    ViewBag.Title = "Rooms";
+
+    WebGrid grid = new WebGrid(rowsPerPage: Model.PageSize, canPage: false, canSort: false);
+    grid.Bind(Model.listRooms.ToPagedList(Model.PageNo, Model.PageSize), autoSortAndPage: false, rowCount: Model.TotalRows);
+    int firstRecord = (grid.PageIndex * grid.RowsPerPage) + 1;
+    int lastRecord = (grid.PageIndex * grid.RowsPerPage) + grid.Rows.Count();
+
+}
+
+<style>
+    .chkbox {
+        height: 18px;
+        width: 18px;
+    }
+</style>
+
+
+<p>
+    @Html.ActionLink("Add Rom", "AddRoom", "User", new { @class = "btn btn-primary btn-prm-len" })
+</p>
+
+<div class="col-md-6">
+
+    @if (!string.IsNullOrEmpty(Convert.ToString(TempData["AddRoomSuccessMsg"])))
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert"><i class="fa fa-remove"></i></button>
+            @TempData["AddRoomSuccessMsg"]
+        </div> 
+    }
+    <div class="panel panel-default">
+        <div class="panel-heading">Add New Room </div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-group row">
+                    @Html.Label("Select Floor Number", new { @class = "col-sm-5 control-label" })
+
+                    <div class="col-sm-7">
+                        @Html.DropDownListFor(model => model.FloorNumber, ViewData["ddlFloors"] as List<SelectListItem>, new { @onchange = "GetValue(this.value)", @class = "form-control" })
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    @Html.Label("Room Number", new { @class = "col-sm-5 control-label" })
+
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(model => model.RoomNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RoomNumber)
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    @Html.Label("Is Active", new { @class = "col-sm-5 control-label" })
+                    <div class="col-sm-7">
+                        @Html.CheckBoxFor(model => model.Status, new { @class = "chkbox" })
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-7">
+                        @Html.ActionLink("Cancel", "Rooms", new { }, new { @class = "btn btn-default" })
+
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">All Rooms </div>
+        <div class="panel-body">
+            @if (Model.listRooms.Count > 0)
+            {
+                <div id="gridContent" style="font-family: Arial; padding: 20px;">
+                    @grid.GetHtml(tableStyle: "table table-hover table-bordered", fillEmptyRows: false, headerStyle: "webgrid-header", footerStyle: "webgrid-footer", selectedRowStyle: "select",
+                     mode: WebGridPagerModes.All,
+                    columns: new[] {
+             //grid.Column("Id",header: "Id", canSort: false, format :(item) => item.GetSelectLink(item.Id.ToString())),
+              grid.Column("RoomNumber",header: "Room Number", canSort: true),
+              grid.Column("FloorNumber",header: "Room Number", canSort: false),
+
+             grid.Column(header: "Status", format: (item) =>  
+            {
+                var link=Html.ActionLink("InActive", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');"});
+    
+                if (item.Status== true)
+                {
+                    link = Html.ActionLink("Active", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');" });  
+                }
+
+                return link;  
+            }) ,
+             grid.Column(header: "Delete", format: (item) =>  
+            {
+                var link = Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "deleteRoomBtn", onclick = "return confirm('Do you really want to delete this room?');" });  
+                return link;  
+            }) 
+           })
+                    Page @(Model.TotalRows < Model.PageNo ? 0 : Model.PageNo) of @Model.TotalPageNo
+
+                    @Html.PagedListPager(Model.listRooms.ToPagedList(Model.PageNo, Model.PageSize), page => Url.Action("Index",
+                                  new { page, sort = ViewBag.CurrentSort, sortDir = "ASC", searchText = "" }))
+
+                    <span>Records @firstRecord to @lastRecord of @grid.TotalRowCount</span>
+                </div>
+            }
+            else
+            {
+                <div>Opps! You have no tanent.</div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    function GetValue(val) {
+
+    }
+</script>

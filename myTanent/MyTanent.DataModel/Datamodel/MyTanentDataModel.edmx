@@ -1,0 +1,533 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="mytanentModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="mytanentModelStoreContainer">
+          <EntitySet Name="tblCity" EntityType="mytanentModel.Store.tblCity" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblRooms" EntityType="mytanentModel.Store.tblRooms" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblState" EntityType="mytanentModel.Store.tblState" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblTanentDocuments" EntityType="mytanentModel.Store.tblTanentDocuments" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblTanentRentDetail" EntityType="mytanentModel.Store.tblTanentRentDetail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblTanentRoomsDetail" EntityType="mytanentModel.Store.tblTanentRoomsDetail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblUser" EntityType="mytanentModel.Store.tblUser" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblUserBankDetail" EntityType="mytanentModel.Store.tblUserBankDetail" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_tblRooms_tblUser1" Association="mytanentModel.Store.FK_tblRooms_tblUser1">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblRooms" EntitySet="tblRooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTanentDocuments_tblUser1" Association="mytanentModel.Store.FK_tblTanentDocuments_tblUser1">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblTanentDocuments" EntitySet="tblTanentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTanentRentDetail_tblUser" Association="mytanentModel.Store.FK_tblTanentRentDetail_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblTanentRentDetail" EntitySet="tblTanentRentDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTanentRoomsDetail_tblUser" Association="mytanentModel.Store.FK_tblTanentRoomsDetail_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblTanentRoomsDetail" EntitySet="tblTanentRoomsDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserBankDetail_tblUser" Association="mytanentModel.Store.FK_tblUserBankDetail_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblUserBankDetail" EntitySet="tblUserBankDetail" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblCity">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CityName" Type="varchar" MaxLength="50" />
+          <Property Name="StateId" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblRooms">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoomNumber" Type="int" />
+          <Property Name="FloorNumber" Type="int" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblState">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="StateName" Type="varchar" MaxLength="100" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblTanentDocuments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="Documents" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="tblTanentRentDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TanentId" Type="uniqueidentifier" />
+          <Property Name="RoomRentAmount" Type="varchar" MaxLength="50" />
+          <Property Name="ElectricityAmount" Type="varchar" MaxLength="50" />
+          <Property Name="MaintananceAmount" Type="varchar" MaxLength="50" />
+          <Property Name="OtherAmount" Type="varchar" MaxLength="50" />
+          <Property Name="PreviousAmount" Type="varchar" MaxLength="50" />
+          <Property Name="DiscountAmount" Type="varchar" MaxLength="50" />
+          <Property Name="TotalPayableAmount" Type="varchar" MaxLength="50" />
+          <Property Name="TotalPaidAmount" Type="varchar" MaxLength="50" />
+          <Property Name="RemainingAmount" Type="varchar" MaxLength="50" />
+          <Property Name="PaidDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblTanentRoomsDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoomNumber" Type="varchar" MaxLength="50" />
+          <Property Name="TanentId" Type="uniqueidentifier" />
+          <Property Name="SecurityRentPaidAmount" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Firstname" Type="varchar" MaxLength="50" />
+          <Property Name="Lastname" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile1" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile2" Type="varchar" MaxLength="50" />
+          <Property Name="EmailId" Type="varchar" MaxLength="50" />
+          <Property Name="UserId" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="UserType" Type="varchar" MaxLength="50" />
+          <Property Name="Country" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="Locality" Type="varchar" MaxLength="500" />
+          <Property Name="PermanentAddress" Type="varchar" MaxLength="500" />
+          <Property Name="UserPhoto" Type="varchar" MaxLength="500" />
+          <Property Name="AllotedRoomNo" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="varchar" MaxLength="10" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="AllotedFloorNo" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblUserBankDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BankName" Type="varchar" MaxLength="50" />
+          <Property Name="AccountName" Type="varchar" MaxLength="50" />
+          <Property Name="AccountNumber" Type="varchar" MaxLength="50" />
+          <Property Name="IFSCCode" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_tblRooms_tblUser1">
+          <End Role="tblUser" Type="mytanentModel.Store.tblUser" Multiplicity="1" />
+          <End Role="tblRooms" Type="mytanentModel.Store.tblRooms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRooms">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTanentDocuments_tblUser1">
+          <End Role="tblUser" Type="mytanentModel.Store.tblUser" Multiplicity="0..1" />
+          <End Role="tblTanentDocuments" Type="mytanentModel.Store.tblTanentDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblTanentDocuments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTanentRentDetail_tblUser">
+          <End Role="tblUser" Type="mytanentModel.Store.tblUser" Multiplicity="0..1" />
+          <End Role="tblTanentRentDetail" Type="mytanentModel.Store.tblTanentRentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblTanentRentDetail">
+              <PropertyRef Name="TanentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTanentRoomsDetail_tblUser">
+          <End Role="tblUser" Type="mytanentModel.Store.tblUser" Multiplicity="1" />
+          <End Role="tblTanentRoomsDetail" Type="mytanentModel.Store.tblTanentRoomsDetail" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblTanentRoomsDetail">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserBankDetail_tblUser">
+          <End Role="tblUser" Type="mytanentModel.Store.tblUser" Multiplicity="1" />
+          <End Role="tblUserBankDetail" Type="mytanentModel.Store.tblUserBankDetail" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserBankDetail">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mytanentModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="mytanentEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="tblCities" EntityType="mytanentModel.tblCity" />
+          <EntitySet Name="tblRooms" EntityType="mytanentModel.tblRoom" />
+          <EntitySet Name="tblStates" EntityType="mytanentModel.tblState" />
+          <EntitySet Name="tblTanentDocuments" EntityType="mytanentModel.tblTanentDocument" />
+          <EntitySet Name="tblTanentRentDetails" EntityType="mytanentModel.tblTanentRentDetail" />
+          <EntitySet Name="tblTanentRoomsDetails" EntityType="mytanentModel.tblTanentRoomsDetail" />
+          <EntitySet Name="tblUsers" EntityType="mytanentModel.tblUser" />
+          <EntitySet Name="tblUserBankDetails" EntityType="mytanentModel.tblUserBankDetail" />
+          <AssociationSet Name="FK_tblRooms_tblUser1" Association="mytanentModel.FK_tblRooms_tblUser1">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblRooms" EntitySet="tblRooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTanentDocuments_tblUser1" Association="mytanentModel.FK_tblTanentDocuments_tblUser1">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblTanentDocuments" EntitySet="tblTanentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTanentRentDetail_tblUser" Association="mytanentModel.FK_tblTanentRentDetail_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblTanentRentDetail" EntitySet="tblTanentRentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTanentRoomsDetail_tblUser" Association="mytanentModel.FK_tblTanentRoomsDetail_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblTanentRoomsDetail" EntitySet="tblTanentRoomsDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserBankDetail_tblUser" Association="mytanentModel.FK_tblUserBankDetail_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblUserBankDetail" EntitySet="tblUserBankDetails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblCity">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="CityName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="StateId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tblRoom">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="RoomNumber" Type="Int32" />
+          <Property Name="FloorNumber" Type="Int32" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblUser" Relationship="mytanentModel.FK_tblRooms_tblUser1" FromRole="tblRooms" ToRole="tblUser" />
+        </EntityType>
+        <EntityType Name="tblState">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="StateName" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tblTanentDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="Documents" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="tblUser" Relationship="mytanentModel.FK_tblTanentDocuments_tblUser1" FromRole="tblTanentDocuments" ToRole="tblUser" />
+        </EntityType>
+        <EntityType Name="tblTanentRentDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="TanentId" Type="Guid" />
+          <Property Name="RoomRentAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ElectricityAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="MaintananceAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="OtherAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PreviousAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="DiscountAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="TotalPayableAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="TotalPaidAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="RemainingAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PaidDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblUser" Relationship="mytanentModel.FK_tblTanentRentDetail_tblUser" FromRole="tblTanentRentDetail" ToRole="tblUser" />
+        </EntityType>
+        <EntityType Name="tblTanentRoomsDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="RoomNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="TanentId" Type="Guid" />
+          <Property Name="SecurityRentPaidAmount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="tblUser" Relationship="mytanentModel.FK_tblTanentRoomsDetail_tblUser" FromRole="tblTanentRoomsDetail" ToRole="tblUser" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Firstname" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Lastname" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Mobile1" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Mobile2" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="EmailId" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="UserId" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="password" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="UserType" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Country" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="State" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="City" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Locality" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="PermanentAddress" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="UserPhoto" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="AllotedRoomNo" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Status" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AllotedFloorNo" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="tblRooms" Relationship="mytanentModel.FK_tblRooms_tblUser1" FromRole="tblUser" ToRole="tblRooms" />
+          <NavigationProperty Name="tblTanentDocuments" Relationship="mytanentModel.FK_tblTanentDocuments_tblUser1" FromRole="tblUser" ToRole="tblTanentDocuments" />
+          <NavigationProperty Name="tblTanentRentDetails" Relationship="mytanentModel.FK_tblTanentRentDetail_tblUser" FromRole="tblUser" ToRole="tblTanentRentDetail" />
+          <NavigationProperty Name="tblTanentRoomsDetail" Relationship="mytanentModel.FK_tblTanentRoomsDetail_tblUser" FromRole="tblUser" ToRole="tblTanentRoomsDetail" />
+          <NavigationProperty Name="tblUserBankDetail" Relationship="mytanentModel.FK_tblUserBankDetail_tblUser" FromRole="tblUser" ToRole="tblUserBankDetail" />
+        </EntityType>
+        <EntityType Name="tblUserBankDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="BankName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AccountName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AccountNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IFSCCode" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="tblUser" Relationship="mytanentModel.FK_tblUserBankDetail_tblUser" FromRole="tblUserBankDetail" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_tblRooms_tblUser1">
+          <End Role="tblUser" Type="mytanentModel.tblUser" Multiplicity="1" />
+          <End Role="tblRooms" Type="mytanentModel.tblRoom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRooms">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTanentDocuments_tblUser1">
+          <End Role="tblUser" Type="mytanentModel.tblUser" Multiplicity="0..1" />
+          <End Role="tblTanentDocuments" Type="mytanentModel.tblTanentDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblTanentDocuments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTanentRentDetail_tblUser">
+          <End Role="tblUser" Type="mytanentModel.tblUser" Multiplicity="0..1" />
+          <End Role="tblTanentRentDetail" Type="mytanentModel.tblTanentRentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblTanentRentDetail">
+              <PropertyRef Name="TanentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTanentRoomsDetail_tblUser">
+          <End Role="tblUser" Type="mytanentModel.tblUser" Multiplicity="1" />
+          <End Role="tblTanentRoomsDetail" Type="mytanentModel.tblTanentRoomsDetail" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblTanentRoomsDetail">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserBankDetail_tblUser">
+          <End Role="tblUser" Type="mytanentModel.tblUser" Multiplicity="1" />
+          <End Role="tblUserBankDetail" Type="mytanentModel.tblUserBankDetail" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserBankDetail">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mytanentModelStoreContainer" CdmEntityContainer="mytanentEntities">
+          <EntitySetMapping Name="tblCities">
+            <EntityTypeMapping TypeName="mytanentModel.tblCity">
+              <MappingFragment StoreEntitySet="tblCity">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRooms">
+            <EntityTypeMapping TypeName="mytanentModel.tblRoom">
+              <MappingFragment StoreEntitySet="tblRooms">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
+                <ScalarProperty Name="FloorNumber" ColumnName="FloorNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStates">
+            <EntityTypeMapping TypeName="mytanentModel.tblState">
+              <MappingFragment StoreEntitySet="tblState">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTanentDocuments">
+            <EntityTypeMapping TypeName="mytanentModel.tblTanentDocument">
+              <MappingFragment StoreEntitySet="tblTanentDocuments">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Documents" ColumnName="Documents" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTanentRentDetails">
+            <EntityTypeMapping TypeName="mytanentModel.tblTanentRentDetail">
+              <MappingFragment StoreEntitySet="tblTanentRentDetail">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TanentId" ColumnName="TanentId" />
+                <ScalarProperty Name="RoomRentAmount" ColumnName="RoomRentAmount" />
+                <ScalarProperty Name="ElectricityAmount" ColumnName="ElectricityAmount" />
+                <ScalarProperty Name="MaintananceAmount" ColumnName="MaintananceAmount" />
+                <ScalarProperty Name="OtherAmount" ColumnName="OtherAmount" />
+                <ScalarProperty Name="PreviousAmount" ColumnName="PreviousAmount" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="TotalPayableAmount" ColumnName="TotalPayableAmount" />
+                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
+                <ScalarProperty Name="RemainingAmount" ColumnName="RemainingAmount" />
+                <ScalarProperty Name="PaidDate" ColumnName="PaidDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTanentRoomsDetails">
+            <EntityTypeMapping TypeName="mytanentModel.tblTanentRoomsDetail">
+              <MappingFragment StoreEntitySet="tblTanentRoomsDetail">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
+                <ScalarProperty Name="TanentId" ColumnName="TanentId" />
+                <ScalarProperty Name="SecurityRentPaidAmount" ColumnName="SecurityRentPaidAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="mytanentModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Mobile1" ColumnName="Mobile1" />
+                <ScalarProperty Name="Mobile2" ColumnName="Mobile2" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Locality" ColumnName="Locality" />
+                <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
+                <ScalarProperty Name="UserPhoto" ColumnName="UserPhoto" />
+                <ScalarProperty Name="AllotedRoomNo" ColumnName="AllotedRoomNo" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="AllotedFloorNo" ColumnName="AllotedFloorNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserBankDetails">
+            <EntityTypeMapping TypeName="mytanentModel.tblUserBankDetail">
+              <MappingFragment StoreEntitySet="tblUserBankDetail">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="IFSCCode" ColumnName="IFSCCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

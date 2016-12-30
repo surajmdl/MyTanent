@@ -1,0 +1,103 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model MyTannent.Web.ViewModel.UserViewModel
+
+@{
+    ViewBag.Title = "My Tanents";
+}
+<style>
+    .btn-prm-len {
+        width: 10%;
+        margin-left: 15px;
+    }
+</style>
+@{
+    ViewBag.Title = "My Tanents";
+    WebGrid grid = new WebGrid(rowsPerPage: Model.PageSize, canPage: false, canSort: false);
+    grid.Bind(Model.UserList.ToPagedList(Model.PageNo, Model.PageSize), autoSortAndPage: false, rowCount: Model.TotalRows);
+    int firstRecord = (grid.PageIndex * grid.RowsPerPage) + 1;
+    int lastRecord = (grid.PageIndex * grid.RowsPerPage) + grid.Rows.Count();
+}
+
+<style type="text/css">
+    
+</style>
+<p>
+    @Html.ActionLink("Add New Tanent", "AddTanent", "Tanent", new { @class = "btn btn-primary btn-prm-len" })
+</p>
+<div class="col-md-12">
+    @if (!string.IsNullOrEmpty(Convert.ToString(TempData["TanentRegisterSuccessMsg"])))
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert"><i class="fa fa-remove"></i></button>
+            @TempData["TanentRegisterSuccessMsg"]
+        </div> 
+    }
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Your Tanent List</div>
+        @if (Model.TotalRows > 0)
+        {
+            <div id="gridContent" style="font-family: Arial; padding: 20px;">
+                @grid.GetHtml(tableStyle: "table table-hover table-bordered",
+ fillEmptyRows: false,
+ headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+selectedRowStyle: "select",
+
+ mode: WebGridPagerModes.All,
+
+ columns: new[] {
+      //grid.Column("Id",header: "Id", canSort: false, format :(item) => item.GetSelectLink(item.Id.ToString())),
+ grid.Column("Firstname",header: "Firstname", canSort: true),
+  grid.Column("Lastname", canSort: false),
+   grid.Column("Mobile1", canSort: false),
+    grid.Column("Locality", canSort: false),
+     grid.Column("City", canSort: false),
+ grid.Column("PermanentAddress", canSort: false),
+ grid.Column("AllotedRoomNo", canSort: false),
+ //grid.Column("Role",header: "Role", canSort: false),
+ // grid.Column("CreatedBy",header: "CreatedBy", canSort: false),
+  // grid.Column("CreatedOn",header: "CreatedOn", canSort: false),
+// grid.Column(header: "Status", format: (item) =>  
+//{
+//    var link=Html.ActionLink("InActive", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');"});
+    
+//    if (item.Status== "1")
+//    {
+//        link = Html.ActionLink("Active", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');" });  
+//    }
+
+//    return link;  
+//}) ,
+ grid.Column(header: "Delete", format: (item) =>  
+{
+    var link = Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "deleteQuestBtn", onclick = "return confirm('Do you really want to delete this user?');" });  
+    return link;  
+}) 
+ })
+                Page @(Model.TotalRows < Model.PageNo ? 0 : Model.PageNo) of @Model.TotalPageNo
+
+                @Html.PagedListPager(Model.UserList.ToPagedList(Model.PageNo, Model.PageSize), page => Url.Action("Index",
+    new { page, sort = ViewBag.CurrentSort, sortDir = "ASC", searchText = "" }))
+
+                <span>Records @firstRecord to @lastRecord of @grid.TotalRowCount</span>
+            </div>
+
+            if (grid.HasSelection)
+            {
+                var quest = (MyTannent.Web.ViewModel.UserViewModel)grid.Rows[grid.SelectedIndex].Value;  
+<h2>Details</h2>
+@*<p><b>ID:</b> @quest.Id</p>  
+    <p><b>Topic:</b> @quest.Topic</p>  
+    <p><b>Question:</b> @quest.Question</p>  
+    <p><b>Answer:</b> @quest.Answer</p>  *@
+
+            } 
+        }
+        else
+        {
+                <div>Opps! You have no tanent.</div>
+        }
+    </div>
+</div>

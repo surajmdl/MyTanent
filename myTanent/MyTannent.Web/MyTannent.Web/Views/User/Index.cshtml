@@ -1,0 +1,121 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model MyTannent.Web.ViewModel.UserViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    ViewBag.Title = "Users";
+    WebGrid grid = new WebGrid(rowsPerPage: Model.PageSize, canPage: false, canSort: false);
+    grid.Bind(Model.UserList.ToPagedList(Model.PageNo, Model.PageSize), autoSortAndPage: false, rowCount: Model.TotalRows);
+    int firstRecord = (grid.PageIndex * grid.RowsPerPage) + 1;
+    int lastRecord = (grid.PageIndex * grid.RowsPerPage) + grid.Rows.Count();
+}
+
+<style type="text/css">
+    .webGrid {
+        margin: 4px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+    }
+
+        .webGrid a:link, a:visited, a:active, a:hover {
+            color: #000;
+        }
+
+    .header {
+        background-color: #C1D4E6;
+        font-weight: bold;
+        color: #FFF;
+    }
+
+    .webGrid th {
+        background-color: brown !important;
+        color: coral;
+    }
+
+    .webGrid th, .webGrid td {
+        border: 1px solid #C0C0C0;
+        padding: 5px;
+    }
+
+    .alt {
+        background-color: #E4E9F5;
+        color: #000;
+    }
+
+    .gridHead a:hover {
+        text-decoration: underline;
+    }
+
+    .description {
+        width: auto;
+    }
+
+    .select {
+        background-color: #71857C;
+    }
+
+    td {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+
+<div id="gridContent" style="font-family: Arial; padding: 20px;">
+    @grid.GetHtml(tableStyle: "webGrid",
+ fillEmptyRows: false,
+ headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+selectedRowStyle: "select",
+ alternatingRowStyle: "webgrid-alternating-row",
+  rowStyle: "webgrid-row-style",
+ mode: WebGridPagerModes.All,
+
+ columns: new[] {
+ grid.Column("ID",header: "ID", canSort: false, format :(item) => item.GetSelectLink(item.Id.ToString())),
+ grid.Column("UserId", canSort: false),
+ grid.Column("Password", canSort: false),
+ //grid.Column("Role",header: "Role", canSort: false),
+ // grid.Column("CreatedBy",header: "CreatedBy", canSort: false),
+  // grid.Column("CreatedOn",header: "CreatedOn", canSort: false),
+// grid.Column(header: "Status", format: (item) =>  
+//{
+//    var link=Html.ActionLink("InActive", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');"});
+    
+//    if (item.Status== "1")
+//    {
+//        link = Html.ActionLink("Active", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');" });  
+//    }
+
+//    return link;  
+//}) ,
+ grid.Column(header: "Delete", format: (item) =>  
+{
+    var link = Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "deleteQuestBtn", onclick = "return confirm('Do you really want to delete this user?');" });  
+    return link;  
+}) 
+ })
+    Page @(Model.TotalRows < Model.PageNo ? 0 : Model.PageNo) of @Model.TotalPageNo
+
+    @Html.PagedListPager(Model.UserList.ToPagedList(Model.PageNo, Model.PageSize), page => Url.Action("Index",
+    new { page, sort = ViewBag.CurrentSort, sortDir = "ASC", searchText = "" }))
+
+    <span>Records @firstRecord to @lastRecord of @grid.TotalRowCount</span>
+</div>
+
+@if (grid.HasSelection)
+{
+    var quest = (MyTannent.Web.ViewModel.UserViewModel)grid.Rows[grid.SelectedIndex].Value;  
+    <h2>Details</h2>
+    @*<p><b>ID:</b> @quest.Id</p>  
+    <p><b>Topic:</b> @quest.Topic</p>  
+    <p><b>Question:</b> @quest.Question</p>  
+    <p><b>Answer:</b> @quest.Answer</p>  *@
+
+}

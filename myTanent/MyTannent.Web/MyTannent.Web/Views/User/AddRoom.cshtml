@@ -1,0 +1,77 @@
+﻿@model MyTannent.Web.ViewModel.RoomViewModel
+
+@{
+    ViewBag.Title = "Add Room";
+}
+<style>
+    .chkbox {
+        height: 18px;
+        width: 18px;
+    }
+</style>
+
+<div class="col-md-6">
+   
+     @if (!string.IsNullOrEmpty(Convert.ToString(TempData["AddRoomSuccessMsg"])))
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert"><i class="fa fa-remove"></i></button>
+            @TempData["AddRoomSuccessMsg"]
+        </div> 
+    }
+    <div class="panel panel-default">
+        <div class="panel-heading">Add New Room </div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-group row">
+                    @Html.Label("Select Floor Number", new { @class = "col-sm-5 control-label" })
+
+                    <div class="col-sm-7">
+                        @Html.DropDownListFor(model => model.FloorNumber, ViewData["ddlFloors"] as List<SelectListItem>, new { @onchange = "GetValue(this.value)", @class = "form-control" })
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    @Html.Label("Room Number", new { @class = "col-sm-5 control-label" })
+
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(model => model.RoomNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RoomNumber)
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    @Html.Label("Is Active", new { @class = "col-sm-5 control-label" })
+                    <div class="col-sm-7">
+                        @Html.CheckBoxFor(model => model.Status, new { @class = "chkbox" })
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-7">
+                        @Html.ActionLink("Cancel", "Rooms", new { }, new { @class = "btn btn-default" })
+
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@
+
+<script>
+    function GetValue(val) {
+
+    }
+</script>

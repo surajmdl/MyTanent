@@ -1,0 +1,17 @@
+<meta name="description" content="Zelo Branded PGs in Bangalore and Pune"/>
+<meta name="keyword" content="Pg in bangalore, pg in pune, paying guest, accomodation"/>
+<meta name="viewport" content="width=device-width">
+<meta name="fragment" content="!"/>
+<meta property="og:title" content="Zelo Branded PGs in Bangalore and Pune"/>
+<meta property="og:description" content="Zelo provides the most comfortable, affordable and well managed accommodations (paying guests, service apartments, flats, rooms, etc.) for men, women and couples in Bangalore and Pune."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://zelo.in"/>
+<meta property="og:image" content="http://zelo.in/assets/images/Zelo-Logo.jpg"/>
+<meta property="og:image:width" content="500"/>
+<meta property="og:image:height" content="500"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:site" content="@livezelo"/>
+<meta name="twitter:url" content="https://zelo.in/"/>
+<meta name="twitter:title" content="Zelo Branded PGs in Bangalore and Pune"/>
+<meta name="twitter:description" content="Zelo provides the most comfortable, affordable and well managed accommodations (paying guests, service apartments, flats, rooms, etc.) for men, women and couples in Bangalore and Pune."/>
+<meta name="twitter:image" content="https://zelo.in/assets/images/Zelo-Logo.jpg"/>
