@@ -23,6 +23,8 @@ namespace MyTannent.Web.Controllers
         string url = "http://localhost:9900/api/UserApi";
         string docUrl = "http://localhost:9900/api/UserDocumentApi";
         string baseUrl = "http://localhost:9900";
+        string RoomUrl = "http://localhost:9900/api/RoomApi";
+
 
         //The HttpClient Class, this will be used for performing HTTP Operations, GET, POST, PUT, DELETE
         //Set the base address and the Header Formatter
@@ -80,6 +82,8 @@ namespace MyTannent.Web.Controllers
             TanentDocumentsModel docModel = new TanentDocumentsModel();
             StateModel smodel = new StateModel();
             smodel.stateList = new List<StateModel>();
+            vmodel.roomModel = new RoomModel();
+            vmodel.roomModel.lstRooms = new List<RoomModel>();
             HttpResponseMessage responseMessage = await client.GetAsync(url + "/GetStates/" + countryId);
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -87,12 +91,31 @@ namespace MyTannent.Web.Controllers
                 vmodel.stateModel = JsonConvert.DeserializeObject<StateModel>(responseData);
                 vmodel.bindStateDDL(vmodel.stateModel.stateList);
             }
+
             vmodel.UserType = "Tanent";
             vmodel.bindFloorDDL();
-            vmodel.bindRoomsDDL();
+            // vmodel.bindRoomsDDL();
             ViewData["ddlFloors"] = vmodel.lstFloors;
             ViewData["ddlRooms"] = vmodel.lstRooms;
             return View(vmodel);
+        }
+
+        public async Task<JsonResult> GetRoomsByFID(int fid)
+        {
+            List<SelectListItem> RoomList = new List<SelectListItem>();
+            Guid userId = Guid.Parse(Session["Id"].ToString()); // loggedin userid
+            HttpResponseMessage RoomResponseMessage = await client.GetAsync(RoomUrl + "/GetAllRoomsByFloor?fid=" + fid + "&id=" + userId);
+            if (RoomResponseMessage.IsSuccessStatusCode)
+            {
+                var RoomResponseData = RoomResponseMessage.Content.ReadAsStringAsync().Result;
+                var room = JsonConvert.DeserializeObject<RoomModel>(RoomResponseData);
+                room.lstRooms.ForEach(x =>
+                {
+                    RoomList.Add(new SelectListItem { Text = x.RoomNumber.ToString(), Value = x.RoomNumber.ToString() });
+                });
+                return Json(RoomList, JsonRequestBehavior.AllowGet);
+            }
+            return Json("Error", JsonRequestBehavior.AllowGet);
         }
 
 
@@ -212,6 +235,16 @@ namespace MyTannent.Web.Controllers
                 return Json(CityList, JsonRequestBehavior.AllowGet);
             }
             return Json("Error", JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> DeleteUser(Guid id)
+        {
+            HttpResponseMessage responseMessage = await client.DeleteAsync(url + "/" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Error");
         }
     }
 }

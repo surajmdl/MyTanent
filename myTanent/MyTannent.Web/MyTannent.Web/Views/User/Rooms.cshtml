@@ -20,9 +20,9 @@
 </style>
 
 
-<p>
+@*<p>
     @Html.ActionLink("Add Rom", "AddRoom", "User", new { @class = "btn btn-primary btn-prm-len" })
-</p>
+</p>*@
 
 <div class="col-md-6">
 
@@ -36,7 +36,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Add New Room </div>
         <div class="panel-body">
-            @using (Html.BeginForm())
+             @using (Html.BeginForm("AddRoom", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
             {
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(model => model.Id)
@@ -53,6 +53,7 @@
 
                     <div class="col-sm-7">
                         @Html.TextBoxFor(model => model.RoomNumber, new { @class = "form-control" })
+
                         @Html.ValidationMessageFor(model => model.RoomNumber)
                     </div>
                 </div>
@@ -87,29 +88,29 @@
                      mode: WebGridPagerModes.All,
                     columns: new[] {
              //grid.Column("Id",header: "Id", canSort: false, format :(item) => item.GetSelectLink(item.Id.ToString())),
+              grid.Column("FloorNumber",header: "Floor Number", canSort: false),
               grid.Column("RoomNumber",header: "Room Number", canSort: true),
-              grid.Column("FloorNumber",header: "Room Number", canSort: false),
 
              grid.Column(header: "Status", format: (item) =>  
             {
-                var link=Html.ActionLink("InActive", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');"});
+                var link = Html.ActionLink("InActive", "ChangeRoomStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');" });
     
                 if (item.Status== true)
                 {
-                    link = Html.ActionLink("Active", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');" });  
+                    link = Html.ActionLink("Active", "ChangeRoomStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');" });  
                 }
 
                 return link;  
             }) ,
              grid.Column(header: "Delete", format: (item) =>  
             {
-                var link = Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "deleteRoomBtn", onclick = "return confirm('Do you really want to delete this room?');" });  
+                var link = Html.ActionLink("Delete", "DeleteRoom", new { id = item.Id }, new { @class = "deleteRoomBtn", onclick = "return confirm('Do you really want to delete this room?');" });  
                 return link;  
             }) 
            })
                     Page @(Model.TotalRows < Model.PageNo ? 0 : Model.PageNo) of @Model.TotalPageNo
 
-                    @Html.PagedListPager(Model.listRooms.ToPagedList(Model.PageNo, Model.PageSize), page => Url.Action("Index",
+                    @Html.PagedListPager(Model.listRooms.ToPagedList(Model.PageNo, Model.PageSize), page => Url.Action("Rooms",
                                   new { page, sort = ViewBag.CurrentSort, sortDir = "ASC", searchText = "" }))
 
                     <span>Records @firstRecord to @lastRecord of @grid.TotalRowCount</span>

@@ -48,31 +48,23 @@ selectedRowStyle: "select",
  mode: WebGridPagerModes.All,
 
  columns: new[] {
-      //grid.Column("Id",header: "Id", canSort: false, format :(item) => item.GetSelectLink(item.Id.ToString())),
- grid.Column("Firstname",header: "Firstname", canSort: true),
+// grid.Column("UserId",header: "UserId", canSort: true,format :(item) => item.GetSelectLink(item.Id.ToString())),
+ grid.Column(header: "Firstname", format: (item) =>  
+{
+    string name = item.Firstname;
+    var link = Html.ActionLink(name, "ProfileView","User", new { Id= item.Id }, new { @class = "fnameLink" });  
+    return link;  
+}) ,
   grid.Column("Lastname", canSort: false),
-   grid.Column("Mobile1", canSort: false),
-    grid.Column("Locality", canSort: false),
-     grid.Column("City", canSort: false),
+   grid.Column("Mobile1",header: "Mobile", canSort: false),
+    //grid.Column("Locality", canSort: false),
+    // grid.Column("City", canSort: false),
  grid.Column("PermanentAddress", canSort: false),
  grid.Column("AllotedRoomNo", canSort: false),
- //grid.Column("Role",header: "Role", canSort: false),
- // grid.Column("CreatedBy",header: "CreatedBy", canSort: false),
-  // grid.Column("CreatedOn",header: "CreatedOn", canSort: false),
-// grid.Column(header: "Status", format: (item) =>  
-//{
-//    var link=Html.ActionLink("InActive", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');"});
-    
-//    if (item.Status== "1")
-//    {
-//        link = Html.ActionLink("Active", "ChangeStatus", new { id = item.Id }, new { onclick = "return confirm('Do you really want to change status?');" });  
-//    }
 
-//    return link;  
-//}) ,
- grid.Column(header: "Delete", format: (item) =>  
+ grid.Column(header: "Action", format: (item) =>  
 {
-    var link = Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "deleteQuestBtn", onclick = "return confirm('Do you really want to delete this user?');" });  
+    var link = Html.ActionLink("Delete", "DeleteUser", new { id = item.Id }, new { @class = "deleteUser", onclick = "return confirm('Do you really want to delete this tanent?');" });  
     return link;  
 }) 
  })
@@ -86,18 +78,25 @@ selectedRowStyle: "select",
 
             if (grid.HasSelection)
             {
-                var quest = (MyTannent.Web.ViewModel.UserViewModel)grid.Rows[grid.SelectedIndex].Value;  
-<h2>Details</h2>
-@*<p><b>ID:</b> @quest.Id</p>  
-    <p><b>Topic:</b> @quest.Topic</p>  
-    <p><b>Question:</b> @quest.Question</p>  
-    <p><b>Answer:</b> @quest.Answer</p>  *@
+                var tanent = (MyTannent.Web.ViewModel.UserViewModel)grid.Rows[grid.SelectedIndex].Value;  
+            <h2>Details</h2>
+            <p><b>ID:</b> @tanent.Id</p>  
+            <p><b>Topic:</b> @tanent.Firstname</p>  
+            <p><b>Question:</b> @tanent.UserId</p>  
+            <p><b>Answer:</b> @tanent.UserType</p>  
 
-            } 
+            }
         }
         else
         {
-                <div>Opps! You have no tanent.</div>
+            <div>Opps! You have no tanent.</div>
         }
     </div>
 </div>
+
+<script>
+
+    function tanentDtl(tid) {
+        alert(tid);
+    }
+</script>

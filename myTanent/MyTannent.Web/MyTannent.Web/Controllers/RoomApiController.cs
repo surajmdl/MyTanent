@@ -12,10 +12,10 @@ namespace MyTannent.Web.Controllers
 {
     public class RoomApiController : ApiController
     {
-         private readonly IRoomRepo repository;
+        private readonly IRoomRepo repository;
 
         //Inject the DataAccessRepository using Construction Injection 
-         public RoomApiController(IRoomRepo repo)
+        public RoomApiController(IRoomRepo repo)
         {
             this.repository = repo;
         }
@@ -43,6 +43,31 @@ namespace MyTannent.Web.Controllers
             return Ok(list.AsEnumerable<RoomModel>());
         }
 
+        // GET api/Room/5
+        [ResponseType(typeof(RoomModel))]
+        [Route("api/RoomApi/GetAllRoomsByFloor")]
+        public IHttpActionResult GetAllRoomsByFloor(int fid, Guid id)
+        {
+            var item = repository.GetAllRoomsByFloor(fid, id);
+
+            if (item == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            else
+            {
+                return Ok(item);
+            }
+        }
+
+        [Route("api/RoomApi/GetRoomByRoomId")]
+        [ResponseType(typeof(RoomModel))]
+        public IHttpActionResult GetRoomByRoomId(Guid id)
+        {
+            var roomModel = repository.GetByRoomID(id);
+            return Ok(roomModel);
+        }
+
         // POST api/RoomApi
         [ResponseType(typeof(RoomModel))]
         public IHttpActionResult Post(RoomModel model)
@@ -51,14 +76,20 @@ namespace MyTannent.Web.Controllers
             return Ok(model);
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        // PUT api/Room/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult Put(Guid id, RoomModel rm)
         {
+            repository.Put(id, rm);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+       [ResponseType(typeof(void))]
+        public IHttpActionResult Delete(Guid id)
         {
+            repository.Delete(id);
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

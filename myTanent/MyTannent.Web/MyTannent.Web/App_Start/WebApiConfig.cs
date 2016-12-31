@@ -15,11 +15,6 @@ namespace MyTannent.Web
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            //config.Routes.MapHttpRoute(
-            //    name: "DefaultApiwithAction",
-            //    routeTemplate: "api/{controller}/{action}"
-            //);
-
             // Controllers with Actions
             // To handle routes like `/api/VTRouting/route`
             config.Routes.MapHttpRoute(

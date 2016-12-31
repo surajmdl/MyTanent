@@ -197,6 +197,30 @@
         $("#State").change(function () {
             loadCity();
         })
+        $("#AllotedFloorNo").change(function () {
+            loadRooms();
+        })
+
+        function loadRooms() {
+            debugger;
+            $("#AllotedRoomNo").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetRoomsByFID")', // we are calling json method
+                dataType: 'json',
+                data: { fid: $("#AllotedFloorNo").val() },
+                success: function (rooms) {
+                    debugger;
+                    $.each(rooms, function (i, room) {
+                        $("#AllotedRoomNo").append('<option value="' + room.Value + '">' + room.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve Rooms.' + ex);
+                }
+            });
+            return false;
+        }
 
         function loadCity() {
             debugger;

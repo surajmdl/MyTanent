@@ -8,6 +8,7 @@
     {
         ProfilePhotoUrl = Model.UserPhoto.Replace("~", baseUrl);
     }
+    string UType = Convert.ToString(Session["UType"]);
 }
 
 @*http://plugins.krajee.com/file-basic-usage-demo*@
@@ -16,6 +17,7 @@
         font-style: italic;
         font-size: x-small;
     }
+
     .docFilesDiv {
         max-height: 150px;
         overflow-y: scroll;
@@ -75,30 +77,48 @@
                             @Html.ValidationMessageFor(model => model.EmailId)
                         </div>
                     </div>
+                    @if ((UType == "Tanent" && Model.UserType == "Tanent") || (UType == "HouseOwner" && Model.UserType == "HouseOwner"))
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserId, new { @class = "col-sm-4 control-label numbersOnly" })
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.UserId, new { @class = "col-sm-4 control-label numbersOnly" })
-
-                        <div class="col-sm-8">
-                            @Html.TextBoxFor(model => model.UserId, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.UserId)
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.UserId, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.UserId)
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.password, new { @class = "col-sm-4 control-label" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.password, new { @class = "col-sm-4 control-label" })
 
-                        <div class="col-sm-8">
-                            @Html.PasswordFor(model => model.password, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.password)
+                            <div class="col-sm-8">
+                                @Html.PasswordFor(model => model.password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.password)
+                            </div>
                         </div>
-                    </div>
-
+                    }
+                    @if ((UType == "HouseOwner" && Model.UserType == "Tanent"))
+                    {
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.AllotedFloorNo, new { @class = "col-sm-4 control-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.AllotedFloorNo, ViewData["ddlFloors"] as List<SelectListItem>, new { @onchange = "GetValue(this.value)", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AllotedFloorNo)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.AllotedRoomNo, new { @class = "col-sm-4 control-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.AllotedRoomNo, ViewData["ddlRooms"] as List<SelectListItem>, new { @onchange = "GetValue(this.value)", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AllotedRoomNo)
+                            </div>
+                        </div>
+                    }
                     <div class="form-group">
                         <label class="control-label col-sm-4 ">Profile Photo</label>
                         <div class="col-sm-8">
-                          <input id="txtUserPhoto" name="profileImg" type="file" class="file form-control"><img height="45px" src="@ProfilePhotoUrl" />
-                            @Html.HiddenFor(model => model.UserPhoto) 
+                            <input id="txtUserPhoto" name="profileImg" type="file" class="file form-control"><img height="45px" src="@ProfilePhotoUrl" />
+                            @Html.HiddenFor(model => model.UserPhoto)
                         </div>
                     </div>
 
@@ -171,15 +191,15 @@
                     </div>
                     <div id="docFilesDiv" class="docFilesDiv">
                         @{
-        if (Model.userDocModel.userDocumentList.Count() > 0)
-        {
+                    if (Model.userDocModel.userDocumentList.Count() > 0)
+                    {
                             <h4>Uploaded Documents: (@Model.userDocModel.userDocumentList.Count()) Files</h4>
-        }
-        foreach (var item in Model.userDocModel.userDocumentList)
-        {
-            string file= item.Documents.Replace("~", baseUrl);
+                    }
+                    foreach (var item in Model.userDocModel.userDocumentList)
+                    {
+                        string file = item.Documents.Replace("~", baseUrl);
                             <p><a href="@file" target="_blank">@file</a></p>                     
-        }
+                    }
                         }
                     </div>
 
@@ -205,9 +225,19 @@
 <script>
     $(document).ready(function () {
         debugger;
+        if ('@UType' == "HouseOwner" && '@Model.UserType' == "Tanent") {
+            loadRooms();
+        }
         $("#State").change(function () {
             loadCity();
         })
+
+        $("#AllotedFloorNo").change(function () {
+            loadRooms();
+        })
+        $(window).load(function () {
+            
+        });
 
         function loadCity() {
             debugger;
@@ -230,6 +260,32 @@
             return false;
         }
     });
+
+
+    function loadRooms() {
+        debugger;
+        var selectedCity = '@Model.AllotedRoomNo';
+        $("#AllotedRoomNo").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetRoomsByFID", "Tanent")', // we are calling json method
+            dataType: 'json',
+            data: { fid: $("#AllotedFloorNo").val() },
+            success: function (rooms) {
+                debugger;
+                $.each(rooms, function (i, room) {
+                    $("#AllotedRoomNo").append('<option value="' + room.Value + '">' + room.Text + '</option>');
+                });
+                if (selectedCity != "") {
+                    $("#AllotedRoomNo").val(selectedCity);
+                }
+            },
+            error: function (ex) {
+                alert('Failed to retrieve Rooms.' + ex);
+            }
+        });
+        return false;
+    }
 
     $(document).ready(function () {
         $('#UserId').prop('readonly', true);

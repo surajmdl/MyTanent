@@ -26,7 +26,7 @@ namespace MyTannent.Web.Controllers
     {
         string AccountApiUrl = "http://localhost:9900/api/AccountApi";
         HttpClient client;
-         //The HttpClient Class, this will be used for performing HTTP Operations, GET, POST, PUT, DELETE
+        //The HttpClient Class, this will be used for performing HTTP Operations, GET, POST, PUT, DELETE
         //Set the base address and the Header Formatter
         public AccountController()
         {
@@ -42,11 +42,15 @@ namespace MyTannent.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            string uid = Convert.ToString(Session["Id"]);
+            if (string.IsNullOrEmpty(uid))
+            {
+                Session["AuthUser"] = null; ;
+                Session["Id"] = null;
+                Session.Abandon();
+                FormsAuthentication.SignOut();
+            }
             ViewBag.ReturnUrl = returnUrl;
-            Session["AuthUser"] = null; ;
-            Session["Id"] = null;
-            Session.Abandon();
-            FormsAuthentication.SignOut();
             return View();
         }
 
@@ -57,7 +61,7 @@ namespace MyTannent.Web.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-   
+
             if (ModelState.IsValid)
             {
                 UserRepo repo = new UserRepo();
@@ -67,7 +71,7 @@ namespace MyTannent.Web.Controllers
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var responseData = responseMessage.Content.ReadAsStringAsync().Result;
-                    userModel = JsonConvert.DeserializeObject<UserViewModel>(responseData);                    
+                    userModel = JsonConvert.DeserializeObject<UserViewModel>(responseData);
                 }
 
                 if (userModel != null)
@@ -76,10 +80,11 @@ namespace MyTannent.Web.Controllers
                     {
                         //if (userModel.Status == true)
                         //{
-                            Session["AuthUser"] = userModel;
-                            FormsAuthentication.SetAuthCookie(userModel.UserId, model.RememberMe);
-                            Session["Id"] = userModel.Id;
-                            return RedirectToLocal(returnUrl);
+                        Session["AuthUser"] = userModel;
+                        FormsAuthentication.SetAuthCookie(userModel.UserId, model.RememberMe);
+                        Session["Id"] = userModel.Id;
+                        Session["UType"] = userModel.UserType;
+                        return RedirectToLocal(returnUrl);
                         //}
                         //else
                         //{
@@ -126,7 +131,7 @@ namespace MyTannent.Web.Controllers
             Session["Id"] = null;
             Session.Abandon();
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

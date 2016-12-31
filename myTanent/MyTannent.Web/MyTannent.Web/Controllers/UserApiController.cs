@@ -38,7 +38,25 @@ namespace MyTannent.Web.Controllers
         public IHttpActionResult GetUser(Guid id)
         {
             var item = repository.Get(id);
+            item.State = repository.GetStateBySID(Convert.ToInt32(item.State));
+            item.City = repository.GetCityByCID(Convert.ToInt32(item.City));
 
+            if (item == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            else
+            {
+                return Ok(item);
+            }
+        }
+
+        // GET api/User/5
+        [ResponseType(typeof(UserModel))]
+        [Route("api/UserApi/GetUserProfile")]
+        public IHttpActionResult GetUserProfile(Guid id)
+        {
+            var item = repository.Get(id);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -98,6 +116,40 @@ namespace MyTannent.Web.Controllers
             }
         }
 
+        // GET api/User/GetStateBySID/5
+        [ResponseType(typeof(string))]
+        [Route("api/UserApi/GetStateBySID")]
+        public IHttpActionResult GetStateBySID(int id)
+        {
+            var item = repository.GetStateBySID(id);
+
+            if (item == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            else
+            {
+                return Ok(item);
+            }
+        }
+
+        // GET api/User/GetCityByCID/5
+        [ResponseType(typeof(string))]
+        [Route("api/UserApi/GetCityByCID")]
+        public IHttpActionResult GetCityByCID(int id)
+        {
+            var item = repository.GetCityByCID(id);
+
+            if (item == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            else
+            {
+                return Ok(item);
+            }
+        }
+
         // POST api/User
         [ResponseType(typeof(UserModel))]
         // [Route("api/UserApi/PostUser")]
@@ -116,12 +168,21 @@ namespace MyTannent.Web.Controllers
             return Ok(model);
         }
 
-        // DELETE api/InterviewQuestion/5
+        //// DELETE api/User/5
+        //[ResponseType(typeof(void))]
+        //public IHttpActionResult Delete(int id)
+        //{
+        //    repository.Delete(id);
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
+
+        // DELETE api/User/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete(Guid id)
         {
-            repository.Delete(id);
+            repository.DeleteUser(id);
             return StatusCode(HttpStatusCode.NoContent);
         }
+
     }
 }

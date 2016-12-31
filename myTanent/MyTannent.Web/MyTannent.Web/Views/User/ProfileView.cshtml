@@ -8,6 +8,8 @@
     {
         ProfilePhotoUrl = Model.UserPhoto.Replace("~", baseUrl);
     }
+    string UType = Convert.ToString(Session["UType"]);
+
 }
 <style>
     .btn-prm-len {
@@ -19,6 +21,7 @@
         font-style: italic;
         font-size: x-small;
     }
+
     .docFilesDiv {
         max-height: 150px;
         overflow-y: scroll;
@@ -96,13 +99,33 @@
                     @Html.DisplayFor(model => model.Age)
                 </div>
             </div>
+            @if (Model.UserType == "Tanent")
+            {
+                <div class="form-group row">
+                   @* @Html.LabelFor(model => model.AllotedFloorNo, new { @class = "col-sm-5 control-label" })*@
+                    <label class="col-sm-5 control-label">Alloted Floor/ Room</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.AllotedFloorNo)/ @Html.DisplayFor(model => model.AllotedRoomNo)
+                    </div>
+                </div>@*
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.AllotedRoomNo, new { @class = "col-sm-5 control-label" })
+
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.AllotedRoomNo)
+                    </div>
+                </div>*@
+            }
             <div class="form-group row">
                 @Html.LabelFor(model => model.UserPhoto, new { @class = "col-sm-5 control-label" })
 
-                <div class="col-sm-7">                  
+                <div class="col-sm-7">
                     <img height="60px" src="@ProfilePhotoUrl" />
                 </div>
             </div>
+
+
         </div>
     </div>
 </div>
@@ -199,3 +222,4 @@
     </div>
 
 </div>
+

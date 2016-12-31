@@ -1,6 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
+    @{
+        string UType = Convert.ToString(Session["UType"]);
+        string UserId = Convert.ToString(Session["Id"]);
+    }
     @*    https://www.freelogoservices.com/*@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,7 +40,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-        <script src="~/Content/js/jquery.min.js"></script>
+    <script src="~/Content/js/jquery.min.js"></script>
 
 
 </head>
@@ -48,7 +52,6 @@
 
         <ul class="ts-profile-nav">
             <li><a href="#">Help</a></li>
-            <li><a href="#">Settings</a></li>
             <li class="ts-account">
                 @if (Request.IsAuthenticated)
                 {
@@ -58,8 +61,9 @@
                     </a>
                
                     <ul>
-                        <li>@Html.ActionLink("My Account", "ProfileView", "User")</li>
-                        <li>@Html.ActionLink("Edit Account", "Profile", "User", new { id = Session["Id"] })</li>
+                        <li>@Html.ActionLink("My Account", "MyAccount", "Home")</li>
+                        <li>@Html.ActionLink("Edit Account", "Profile", "User", new { id = UserId })
+                        </li>
                         <li>
                             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
@@ -95,24 +99,29 @@
                     <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i>Dashboard</a></li>
                     <li><a href="/Home/MyAccount"><i class="fa fa-edit"></i>My Account</a></li>
                     @*                    <li><a href="forms.html"><i class="fa fa-edit"></i>Profile</a></li>*@
-                    <li><a href="/Home/Bookings"><i class="fa fa-edit"></i>Bookings</a></li>
+                    @if (UType == "HouseOwner")
+                    {
+                        <li><a href="/Home/Bookings"><i class="fa fa-edit"></i>Bookings</a></li>
 
-                    <li class="">
-                        <div class="more"><i class="fa fa-angle-down"></i></div>
-                        <a href="#" class="parent"><i class="fa fa-desktop"></i>Tanents</a>
-                        <ul>
-                            <li><a href="/Tanent/">Tanent List</a></li>
-                            <li><a href="/Tanent/AddTanent">Add Tanent</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/User/Rooms/"><i class="fa fa-table"></i>Rooms</a></li>
+                        <li class="">
+                            <div class="more"><i class="fa fa-angle-down"></i></div>
+                            <a href="#" class="parent"><i class="fa fa-desktop"></i>Tanents</a>
+                            <ul>
+                                <li><a href="/Tanent/">Tanent List</a></li>
+                                <li><a href="/Tanent/AddTanent">Add Tanent</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/User/Rooms/"><i class="fa fa-table"></i>Rooms</a></li>
+                    }
+
+
                     <li><a href="/Home/MyWallet"><i class="fa fa-pie-chart"></i>Wallet</a></li>
                     <li class="">
                         <div class="more"><i class="fa fa-angle-down"></i></div>
                         <a href="#" class="parent"><i class="fa fa-desktop"></i>Payments</a>
                         <ul>
-                            <li><a href="panels.html">Pay Rent</a></li>
-                            <li><a href="buttons.html">Payment History</a></li>
+                            <li><a href="/Payment/PayRent/">Pay Rent</a></li>
+                            <li><a href="/Payment/PaymentHistory/">Payment History</a></li>
                         </ul>
                     </li>
                     <li><a href="charts.html"><i class="fa fa-pie-chart"></i>Request Query</a></li>
@@ -145,7 +154,7 @@
                     <!-- Account from above -->
                     <ul class="ts-profile-nav">
                         <li><a href="#">Help</a></li>
-                        <li><a href="#">Settings</a></li>
+                    @*    <li><a href="#">Settings</a></li>*@
                         <li class="ts-account">
                             <div class="more"><i class="fa fa-angle-down"></i></div>
                             <a href="#" class="parent">
@@ -167,8 +176,6 @@
 
                 <div class="row">
                     <div class="col-md-12">
-
-
                         @RenderBody()
                     </div>
                 </div>

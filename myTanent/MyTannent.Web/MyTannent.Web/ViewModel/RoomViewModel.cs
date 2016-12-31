@@ -24,6 +24,7 @@ namespace MyTannent.Web.ViewModel
         public List<RoomModel> listRooms { get; set; }
 
         public List<SelectListItem> lstFloors = new List<SelectListItem>();
+        public List<SelectListItem> lstRooms = new List<SelectListItem>();
 
         public int TotalRows { get; set; }
         public int PageSize { get; set; }
@@ -41,6 +42,18 @@ namespace MyTannent.Web.ViewModel
             }
         }
 
-
+        public void bindRoomsDDL(List<RoomModel> rooms)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            rooms.ToList().ForEach(s =>
+            {
+                items.Add(new SelectListItem()
+                {
+                    Text = s.RoomNumber.ToString(),
+                    Value = s.RoomNumber.ToString()
+                });
+            });
+            this.lstRooms = items;
+        }
     }
 }

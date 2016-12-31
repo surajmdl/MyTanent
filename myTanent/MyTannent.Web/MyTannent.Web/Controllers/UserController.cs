@@ -16,6 +16,7 @@ using System.IO;
 
 namespace MyTannent.Web.Controllers
 {
+    [Authorize]
     public class UserController : BaseController
     {
         HttpClient client;
@@ -61,7 +62,7 @@ namespace MyTannent.Web.Controllers
         {
             UserViewModel viewMOdel = new UserViewModel();
             TanentDocumentsModel docModel = new TanentDocumentsModel();
-            HttpResponseMessage responseMessage = await client.GetAsync(url + "/GetUser/" + id);
+            HttpResponseMessage responseMessage = await client.GetAsync(url + "/GetUserProfile/" + id);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseData = responseMessage.Content.ReadAsStringAsync().Result;
@@ -84,6 +85,12 @@ namespace MyTannent.Web.Controllers
                 {
                     viewMOdel.UserPhoto = viewMOdel.UserPhoto.Replace("~", baseUrl);
                 }
+                viewMOdel.bindFloorDDL();
+               // viewMOdel.bindRoomsDDL();
+                ViewData["ddlFloors"] = viewMOdel.lstFloors;
+                ViewData["ddlRooms"] = viewMOdel.lstRooms;
+
+
                 return View(viewMOdel);
             }
             return View("Error");
@@ -98,8 +105,17 @@ namespace MyTannent.Web.Controllers
             {
                 var responseData = responseMessage.Content.ReadAsStringAsync().Result;
                 viewMOdel = JsonConvert.DeserializeObject<UserViewModel>(responseData);
-                viewMOdel.State = viewMOdel.State; // need change
-                viewMOdel.City = viewMOdel.City; // need change
+               // HttpResponseMessage responseMessageState = await client.GetAsync(url + "/GetStateBySID/" + id);
+               // HttpResponseMessage responseMessageCity = await client.GetAsync(url + "/GetCityByCID/" + id);
+                //if (responseMessageState.IsSuccessStatusCode)
+                //{
+                //    viewMOdel.State = viewMOdel.State; 
+                //}
+                //if (responseMessageState.IsSuccessStatusCode)
+                //{
+                //    viewMOdel.City = viewMOdel.City; 
+                //}
+
                 HttpResponseMessage DocResponseMessage = await client.GetAsync(url + "/GetUserDocuments/" + id);
                 if (DocResponseMessage.IsSuccessStatusCode)
                 {
@@ -232,17 +248,17 @@ namespace MyTannent.Web.Controllers
                     vmodel.bindFloorDDL();
                     ViewData["ddlFloors"] = vmodel.lstFloors;
                     TempData["AddRoomSuccessMsg"] = "New Room Added Successfully.";
-                    return View(vmodel);
+                    return RedirectToAction("Rooms");
                 }
                 return RedirectToAction("Error");
             }
             else
             {
-                vmodel.bindFloorDDL();
-                ViewData["ddlFloors"] = vmodel.lstFloors;
-                return View(vmodel);
+                //  vmodel.bindFloorDDL();
+                //  ViewData["ddlFloors"] = vmodel.lstFloors;
+                TempData["RoomError"] = "Please enter room number.";
+                return RedirectToAction("Rooms");
             }
-
         }
 
         public async Task<ActionResult> Rooms(int page = 1, string sort = "ID", string sortDir = "ASC", string searchText = "")
@@ -270,6 +286,13 @@ namespace MyTannent.Web.Controllers
                 vmodel.TotalPageNo = totalPage;
 
             }
+
+            string err = Convert.ToString(TempData["RoomError"]);
+            if (!string.IsNullOrEmpty(err))
+            {
+                ModelState.AddModelError("RoomNumber", err);
+            }
+
             return View(vmodel);
         }
 
@@ -290,5 +313,44 @@ namespace MyTannent.Web.Controllers
             return Json("Error", JsonRequestBehavior.AllowGet);
         }
 
+        public async Task<ActionResult> ChangeRoomStatus(Guid id)
+        {
+            RoomModel rm= new RoomModel ();
+            HttpResponseMessage responseMessage = await client.PutAsJsonAsync(Roomurl+"/"+ id, rm);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Rooms");
+            }
+            return RedirectToAction("Error");
+        }
+
+        public async Task<ActionResult> DeleteRoom(Guid id)
+        {
+            RoomModel rm = new RoomModel();
+            HttpResponseMessage responseMessage = await client.DeleteAsync(Roomurl + "/" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Rooms");
+            }
+            return RedirectToAction("Error");
+        }
+
+        //public async Task<JsonResult> GetRoomsByFID(int fid)
+        //{
+        //    List<SelectListItem> RoomList = new List<SelectListItem>();
+        //    Guid userId = Guid.Parse(Session["Id"].ToString()); // loggedin userid
+        //    HttpResponseMessage RoomResponseMessage = await client.GetAsync(Roomurl + "/GetAllRoomsByFloor?fid=" + fid + "&id=" + userId);
+        //    if (RoomResponseMessage.IsSuccessStatusCode)
+        //    {
+        //        var RoomResponseData = RoomResponseMessage.Content.ReadAsStringAsync().Result;
+        //        var room = JsonConvert.DeserializeObject<RoomModel>(RoomResponseData);
+        //        room.lstRooms.ForEach(x =>
+        //        {
+        //            RoomList.Add(new SelectListItem { Text = x.RoomNumber.ToString(), Value = x.RoomNumber.ToString() });
+        //        });
+        //        return Json(RoomList, JsonRequestBehavior.AllowGet);
+        //    }
+        //    return Json("Error", JsonRequestBehavior.AllowGet);
+        //}
     }
 }

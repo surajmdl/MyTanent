@@ -88,6 +88,7 @@ namespace MyTannent.Web.ViewModel
         public UserModel userModel { get; set; }
         public StateModel stateModel { get; set; }
         public CityModel cityModel { get; set; }
+        public RoomModel roomModel { get; set; }
 
         public List<SelectListItem> lstFloors = new List<SelectListItem>();
         public List<SelectListItem> lstRooms = new List<SelectListItem>();
@@ -101,9 +102,9 @@ namespace MyTannent.Web.ViewModel
         /// </summary>
         public void bindFloorDDL()
         {
+            lstFloors.Add(new SelectListItem { Text = "Select a floor", Value = "0" });
             for (int i = 1; i <= 10; i++)
             {
-                //string text = i+(i == 1 ? " Room" : " Rooms");
                 string text = "Floor " + i;
                 lstFloors.Add(new SelectListItem { Text = text, Value = i.ToString() });
             }
@@ -120,6 +121,20 @@ namespace MyTannent.Web.ViewModel
                 string text = "Room " + i;
                 lstRooms.Add(new SelectListItem { Text = text, Value = i.ToString() });
             }
+        }
+
+        public void bindRoomsDDL(List<RoomModel> rooms)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            rooms.ToList().ForEach(s =>
+            {
+                items.Add(new SelectListItem()
+                {
+                    Text = s.RoomNumber.ToString(),
+                    Value = s.RoomNumber.ToString()
+                });
+            });
+            this.lstRooms = items;
         }
 
         /// <summary>
@@ -159,6 +174,8 @@ namespace MyTannent.Web.ViewModel
             });
             this.lstCity = items;
         }
+
+
     }
 
     public enum UsersType { HouseOwner, Tanent };

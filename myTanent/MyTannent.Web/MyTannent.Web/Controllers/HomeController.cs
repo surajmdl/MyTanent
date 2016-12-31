@@ -10,9 +10,13 @@ namespace MyTannent.Web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-
-            return View();
+            string uid = Convert.ToString(Session["Id"]);
+            if (string.IsNullOrEmpty(uid))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            Guid val = Guid.Parse(uid);
+            return RedirectToAction("ProfileView", "User", new { id = val });
         }
 
 
