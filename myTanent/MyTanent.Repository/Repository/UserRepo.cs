@@ -203,5 +203,21 @@ namespace MyTanent.Repository.Repository
             }
             return result;
         }
+
+
+        public string GetStateBySID(int id)
+        {
+            return entities.tblStates.Find(id).StateName;
+        }
+
+        public string GetCityByCID(int id)
+        {
+            return entities.tblCities.Find(id).CityName;
+        }
+
+        public string GetCountryByConID(int conId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

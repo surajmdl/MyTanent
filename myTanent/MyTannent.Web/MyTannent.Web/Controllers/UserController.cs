@@ -16,7 +16,7 @@ using System.IO;
 
 namespace MyTannent.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UserController : BaseController
     {
         HttpClient client;

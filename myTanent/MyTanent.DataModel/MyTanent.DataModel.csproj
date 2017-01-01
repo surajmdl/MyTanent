@@ -101,25 +101,26 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MyTanentDataModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Datamodel\MyTanentDataModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MyTanentDataModel.edmx</DependentUpon>
-      <LastGenOutput>MyTanentDataModel.Context.cs</LastGenOutput>
-    </None>
     <None Include="Datamodel\MyTanentDataModel.edmx.diagram">
       <DependentUpon>MyTanentDataModel.edmx</DependentUpon>
-    </None>
-    <None Include="Datamodel\MyTanentDataModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MyTanentDataModel.edmx</DependentUpon>
-      <LastGenOutput>MyTanentDataModel.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Datamodel\MyTanentDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MyTanentDataModel.edmx</DependentUpon>
+      <LastGenOutput>MyTanentDataModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Datamodel\MyTanentDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MyTanentDataModel.edmx</DependentUpon>
+      <LastGenOutput>MyTanentDataModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

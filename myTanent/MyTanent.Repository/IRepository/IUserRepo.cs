@@ -19,5 +19,8 @@ namespace MyTanent.Repository.IRepository
        IEnumerable<UserModel> GetAllById(Guid id);
        StateModel GetStates(int id);
        int DeleteUser(Guid uid);
+       string GetStateBySID(int sId);
+       string GetCityByCID(int cId);
+       string GetCountryByConID(int conId);
     }
 }
